@@ -1,17 +1,33 @@
 services:
+  mongo-1:
+    container_name: mongo-1
+    build: .
+    ports:
+     - 27017:27017
+    command:
+      mongod --replSet mongo-set
+    networks:
+      - mongo-cluster
   mongo-2:
     image: mongo:5.0.7
     container_name: mongo-2
     ports:
-      - 27018:27018
+      - 27018:27017
+    command: 
+      mongod --replSet mongo-set
+    networks:
+      - mongo-cluster
   mongo-3:
     image: mongo:5.0.7
     container_name: mongo-3
     ports:
-      - 27019:27019
-  mongo-1:
-    #image: mongo:5.0.7
-      build: .
-      container_name: mongo-1
-      ports:
-       - 27017:27017
+      - 27019:27017
+    command:
+      mongod --replSet mongo-set
+    networks:
+      - mongo-cluster
+networks:
+  mongo-cluster: 
+  
+       
+
